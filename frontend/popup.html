@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>File Parser</title>
+  <style>
+    body {
+      width: 15.625rem;  /* Width of the popup (small vertical rectangle) */
+      height: 18.75rem;  /* Height of the popup */
+      padding: 0.625rem;
+      background-color: black;
+      color: white;
+      border-radius: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    h1 {
+        content: center;
+        position: relative;
+        top: -2rem;
+    }
+    h3 {
+      font-size: 1rem;
+      margin-bottom: 2rem;
+    }
+    input[type="file"] {
+      margin-bottom: 0.938rem;
+    }
+    button {
+      padding: 0.5rem 0.75rem;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 0.25rem;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    #output {
+      margin-top: 0.625rem;
+      font-size: 0.75rem;
+      color: #555;
+    }
+  </style>
+</head>
+<body> 
+  <h1>PII Analyzer</h1>  
+  <h3>Upload a file</h3>
+  <input type="file" id="file-input">
+  <button id="parse-button">Parse File</button>
+  <div id="output"></div>
+  <script src="popup.js"></script>
+</body>
+</html>
