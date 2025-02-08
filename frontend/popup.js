@@ -31,6 +31,29 @@ async function extractTextFromPDF(file) {
   document.getElementById('output').textContent = textContent || "No text found.";
 }
 
+// Function to load and extract text from the TXT file
+async function extractTextFromTXT(file) {
+    // Check if file provided
+    if (!file) {
+        console.error("No file provided");
+        return
+    }
+
+    const reader = new FileReader();
+
+    reader.onload = function(e) {
+        const textContent = e.target.result;
+        document.getElementById('output').textContent = textContent || "No text found.";
+    };
+
+    reader.onerror = function(e) {
+        console.error("Error reading file")
+        document.getElementById('output').textContent = "Error reading file";
+    };
+
+    reader.readAsText(file);
+}
+
 // Event listener for the Parse File button
 document.getElementById('parse-button').addEventListener('click', function () {
   const fileInput = document.getElementById('file-input');
@@ -43,8 +66,17 @@ document.getElementById('parse-button').addEventListener('click', function () {
     // Clear any previous output (text or canvas)
     document.getElementById('output').innerHTML = '';
 
-    // Call the function to extract text from the PDF
-    extractTextFromPDF(file);
+    // Extracting the file extension
+    const fileExtension = file.name.split('.').pop().toLowerCase();
+
+    if (fileExtension === 'pdf') {
+        // Call the function to extract text from the PDF
+        extractTextFromPDF(file);
+    } else if (fileExtension === 'txt') {
+        extractTextFromTXT(file);
+    } else {
+        document.getElementById('output').textContent = "Unsupported file type.";
+    }
   } else {
     document.getElementById('output').textContent = "No file selected.";
   }
