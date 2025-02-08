@@ -1,0 +1,19 @@
+{
+    "manifest_version": 3,
+    "name": "PII Extension",
+    "description": "An extension to parse files and extract PIIs",
+    "version": "1.0",
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "permissions": [
+      "activeTab"
+    ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "host_permissions": [
+      "file:///*"
+    ]
+  }
+  
