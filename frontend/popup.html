@@ -4,8 +4,8 @@
   <title>File Parser</title>
   <style>
     body {
-      width: 15.625rem;  /* Width of the popup (small vertical rectangle) */
-      height: 18.75rem;  /* Height of the popup */
+      width: 20rem;  /* Width of the popup (small vertical rectangle) */
+      height: 20rem;  /* Height of the popup */
       padding: 0.625rem;
       background-color: black;
       color: white;
@@ -41,7 +41,7 @@
     #output {
       margin-top: 0.625rem;
       font-size: 0.75rem;
-      color: #555;
+      color: white;
     }
   </style>
 </head>
@@ -51,6 +51,6 @@
   <input type="file" id="file-input">
   <button id="parse-button">Parse File</button>
   <div id="output"></div>
-  <script src="popup.js"></script>
+  <script type="module" src="popup.js"></script>
 </body>
 </html>
