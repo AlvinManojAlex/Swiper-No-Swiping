@@ -89,6 +89,8 @@ function displayPiiResults(piiResults) {
     const outputDiv = document.getElementById('output');
 
     if (piiResults.length > 0) {
+        // Add the red theme
+        document.body.classList.add('red-theme');
         outputDiv.innerHTML = `<strong>PII Detected:</strong><br>${piiResults.join('<br>')}`;
     } else {
         outputDiv.textContent = "No PIIs found."
