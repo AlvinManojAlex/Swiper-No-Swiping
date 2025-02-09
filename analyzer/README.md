@@ -1,1 +1,0 @@
-# This directory will be for creating scripts for analyzing the PIIs from text
