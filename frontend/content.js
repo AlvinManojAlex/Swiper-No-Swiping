@@ -11,23 +11,11 @@ const activateOnFileAttach = () => {
             console.log("Files attached:", files);
 
             const file = files[0];
-
-            // Create a FileReader to read the file as ArrayBuffer
-            const reader = new FileReader();
-
-            // When the file is read, store it in localStorage as Base64 or ArrayBuffer
-            reader.onloadend = () => {
-                const arrayBuffer = reader.result;
-                // Convert ArrayBuffer to Base64 string
-                const base64String = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-
-                // Store Base64 string in localStorage
-                localStorage.setItem('fileData', base64String);
-                console.log("File stored in localStorage as Base64");
-            };
-
-            // Read the file as an ArrayBuffer
-            reader.readAsArrayBuffer(file);
+            
+            // Storing the file in local storage as a Blob URL
+            const fielURL = URL.createObjectURL(file);
+            localStorage.setItem('fileBlobURL', fileURL);
+            console.log("Blob URL stored in local storage", fileURL);
         }
     });
 
@@ -68,21 +56,11 @@ const activateOnFileAttach = () => {
             const files = event.target.files;
             if (files.length > 0) {
                 console.log("Website opened file dialog and selected files:", files);
-
-                // Use FileReader to read the file as ArrayBuffer and store as Base64
-                const file = files[0];
-                const reader = new FileReader();
-
-                reader.onloadend = () => {
-                    const arrayBuffer = reader.result;
-                    const base64String = btoa(String.fromCharCode(...new Uint8Array(arrayBuffer)));
-
-                    // Store Base64 string in localStorage
-                    localStorage.setItem('fileData', base64String);
-                    console.log("File stored in localStorage as Base64");
-                };
-
-                reader.readAsArrayBuffer(file);
+                
+                // Storing the file in local storage as a Blob URL
+                const fileURL = URL.createObjectURL(files[0]);
+                localStorage.setItem('fileBlobURL', fileURL);
+                console.log("Blob URL stored in local storage", fileURL);
             }
         }
     });
