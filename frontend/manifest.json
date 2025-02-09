@@ -7,13 +7,19 @@
       "default_popup": "popup.html"
     },
     "permissions": [
-      "activeTab"
+      "activeTab",
+      "storage"
     ],
     "background": {
       "service_worker": "background.js"
     },
     "host_permissions": [
-      "file:///*"
-    ]
+      "file:///*",
+      "<all_urls>"
+    ],
+    "content_scripts": [{
+        "matches": ["<all_urls>"],
+        "js": ["content.js"]
+    }]
   }
   

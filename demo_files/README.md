@@ -1,0 +1,1 @@
+# This directory will be used for demo purposes of the extension on a locally hosted webpage
