@@ -12,17 +12,19 @@ function scanForPII2(text) {
     };
     
     let foundPII = [];
+    let matches = {};  // Store matches for redaction
     
     // Loop through the patterns
     for (const [type, regex] of Object.entries(patterns)) {
-        const matches = text.match(regex);
-        if (matches) {
-            foundPII.push(`${type}: ${matches.join(', ')}`);
+        const typeMatches = text.match(regex);
+        if (typeMatches) {
+            foundPII.push(`${type}: ${typeMatches.join(', ')}`);
+            matches[type] = typeMatches;  // Store matches by type
         }
     }
     
-    // Return the PII results
-    return foundPII;
+    // Return both the PII results and matches
+    return { foundPII, matches };
 }
 
 // Set the worker src (pdf.worker.mjs)
@@ -52,8 +54,11 @@ async function extractTextFromPDF(file) {
     textContent += pageText + '\n\n';  // Add the extracted text for this page
   }
 
+  // Store the content and filename
+  currentFileContent = textContent;
+  currentFileName = file.name;
+
   // Scan for PII and then display the results
-//   document.getElementById('output').textContent = textContent;
   const piiResults = scanForPII2(textContent);
   displayPiiResults(piiResults);
 }
@@ -70,9 +75,12 @@ async function extractTextFromTXT(file) {
 
     reader.onload = function(e) {
         const textContent = e.target.result;
+        
+        // Store the content and filename
+        currentFileContent = textContent;
+        currentFileName = file.name;
 
-        // Scan for PII and dispay the results
-        // document.getElementById('output').textContent = textContent;
+        // Scan for PII and display the results
         const piiResults = scanForPII2(textContent);
         displayPiiResults(piiResults);
     };
@@ -89,18 +97,56 @@ async function extractTextFromTXT(file) {
 function displayPiiResults(piiResults) {
     const outputDiv = document.getElementById('output');
     const uploadButton = document.getElementById('upload-button');
+    const redactButton = document.getElementById('redact-button');
 
-    if (piiResults.length > 0) {
+    if (piiResults.foundPII.length > 0) {
         document.body.classList.add('red-theme');
-        outputDiv.innerHTML = `<strong>PII Detected:</strong><br>${piiResults.join('<br>')}`;
+        outputDiv.innerHTML = `
+            <strong>PII Detected:</strong><br>
+            ${piiResults.foundPII.join('<br>')}
+        `;
+        // Show the redact button that's already in the HTML
+        redactButton.style.display = 'block';
     } else {
-        document.body.classList.remove('red-theme'); // Remove red theme if no PIIs found
+        document.body.classList.remove('red-theme');
         outputDiv.textContent = "No PIIs found.";
+        // Hide the redact button
+        redactButton.style.display = 'none';
     }
     
-    // Reset the button to allow new file upload
     uploadButton.textContent = "Upload New File";
 }
+
+// Function to redact PII from text
+function redactPII(text, matches) {
+    let redactedText = text;
+    // Go through each type of PII
+    for (const [type, typeMatches] of Object.entries(matches)) {
+        typeMatches.forEach(match => {
+            // Replace each match with X's of the same length
+            redactedText = redactedText.replace(match, 'X'.repeat(match.length));
+        });
+    }
+    return redactedText;
+}
+
+// Function to download text as file
+function downloadTextFile(text, originalFileName) {
+    const blob = new Blob([text], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    const baseName = originalFileName.split('.')[0];  // Just get the name without extension
+    a.href = url;
+    a.download = `${baseName}_redacted.txt`;  // Always use .txt extension
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Add these variables at the top level to store the current file's content
+let currentFileContent = '';
+let currentFileName = '';
 
 // Remove the separate parse button event listener and combine functionality
 document.getElementById('upload-button').addEventListener('click', function() {
@@ -128,4 +174,11 @@ document.getElementById('file-input').addEventListener('change', (event) => {
             document.getElementById('upload-button').textContent = "Upload New File";
         }
     }
+});
+
+// Update the event listener to target the button by ID instead of delegation
+document.getElementById('redact-button').addEventListener('click', function() {
+    const piiResults = scanForPII2(currentFileContent);
+    const redactedText = redactPII(currentFileContent, piiResults.matches);
+    downloadTextFile(redactedText, currentFileName);
 });
