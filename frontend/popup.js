@@ -87,40 +87,44 @@ async function extractTextFromTXT(file) {
 // Function to display the PII results on the extension frontend
 function displayPiiResults(piiResults) {
     const outputDiv = document.getElementById('output');
+    const uploadButton = document.getElementById('upload-button');
 
     if (piiResults.length > 0) {
-        // Add the red theme
         document.body.classList.add('red-theme');
         outputDiv.innerHTML = `<strong>PII Detected:</strong><br>${piiResults.join('<br>')}`;
     } else {
-        outputDiv.textContent = "No PIIs found."
+        document.body.classList.remove('red-theme'); // Remove red theme if no PIIs found
+        outputDiv.textContent = "No PIIs found.";
     }
+    
+    // Reset the button to allow new file upload
+    uploadButton.textContent = "Upload New File";
 }
 
-// Event listener for the Parse File button
-document.getElementById('parse-button').addEventListener('click', function () {
-  const fileInput = document.getElementById('file-input');
-  const file = fileInput.files[0];
+// Remove the separate parse button event listener and combine functionality
+document.getElementById('upload-button').addEventListener('click', function() {
+    const fileInput = document.getElementById('file-input');
+    
+    // Always clear the file input when clicking the button
+    fileInput.value = '';
+    // Always trigger file selection
+    fileInput.click();
+});
 
-  if (file) {
-    // Display file name and start PDF processing
-    document.getElementById('output').textContent = `Selected file: ${file.name}`;
-
-    // Clear any previous output (text or canvas)
-    document.getElementById('output').innerHTML = '';
-
-    // Extracting the file extension
-    const fileExtension = file.name.split('.').pop().toLowerCase();
-
-    if (fileExtension === 'pdf') {
-        // Call the function to extract text from the PDF
-        extractTextFromPDF(file);
-    } else if (fileExtension === 'txt') {
-        extractTextFromTXT(file);
-    } else {
-        document.getElementById('output').textContent = "Unsupported file type.";
+document.getElementById('file-input').addEventListener('change', (event) => {
+    const file = event.target.files[0];
+    if (file) {
+        document.getElementById('upload-button').textContent = file.name;
+        document.getElementById('output').textContent = `Processing: ${file.name}`;
+        
+        const fileExtension = file.name.split('.').pop().toLowerCase();
+        if (fileExtension === 'pdf') {
+            extractTextFromPDF(file);
+        } else if (fileExtension === 'txt') {
+            extractTextFromTXT(file);
+        } else {
+            document.getElementById('output').textContent = "Unsupported file type.";
+            document.getElementById('upload-button').textContent = "Upload New File";
+        }
     }
-  } else {
-    document.getElementById('output').textContent = "No file selected.";
-  }
 });
