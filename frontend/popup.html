@@ -1,55 +1,120 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>File Parser</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PII Analyzer</title>
   <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      width: 20rem;  /* Width of the popup (small vertical rectangle) */
-      height: 20rem;  /* Height of the popup */
-      padding: 0.625rem;
-      background-color: black;
-      color: white;
-      border-radius: 0.5rem;
+      /* Responsive container */
+      width: 90vw;
+      max-width: 20rem;
+      min-width: 15rem;
+      height: auto;
+      padding: 1.5rem;
+      background-color: #15202B;  /* Twitter dark mode background */
+      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      border-radius: 0.75rem;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
+
     h1 {
-        content: center;
-        position: relative;
-        top: -2rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #1DA1F2;  /* Twitter blue accent */
     }
+
     h3 {
       font-size: 1rem;
-      margin-bottom: 2rem;
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      color: #8899a6;  /* Lighter gray for secondary text */
     }
+
     input[type="file"] {
-      margin-bottom: 0.938rem;
+      margin-bottom: 1.5rem;
+      padding: 0.5rem;
+      background-color: #192734;
+      color: #ffffff;
+      border: 1px solid #1DA1F2;
+      border-radius: 0.375rem;
+      cursor: pointer;
+      width: 100%;
+      font-size: 0.875rem;
     }
+
+    input[type="file"]:hover {
+      border-color: #1DA1F2;
+    }
+
     button {
-      padding: 0.5rem 0.75rem;
-      background-color: #4CAF50;
+      padding: 0.75rem 1.5rem;
+      background-color: #1DA1F2;
       color: white;
       border: none;
-      border-radius: 0.25rem;
+      border-radius: 0.375rem;
       cursor: pointer;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: background-color 0.3s ease;
+      width: 100%;
     }
+
     button:hover {
-      background-color: #45a049;
+      background-color: #1A91DA;
     }
+
     #output {
-      margin-top: 0.625rem;
-      font-size: 0.75rem;
-      color: white;
+      margin-top: 1.5rem;
+      font-size: 0.875rem;
+      color: #ffffff;
+      text-align: center;
+      width: 100%;
+      overflow-y: auto;
+      max-height: 5rem;
+      padding: 0.5rem;
+      background-color: #192734;
+      border-radius: 0.375rem;
+      border: 1px solid #1DA1F2;
+    }
+
+    /* Scrollbar Styling */
+    #output::-webkit-scrollbar {
+      width: 0.5rem;
+    }
+
+    #output::-webkit-scrollbar-track {
+      background: #15202B;
+    }
+
+    #output::-webkit-scrollbar-thumb {
+      background: #1DA1F2;
+      border-radius: 0.25rem;
+    }
+
+    #output::-webkit-scrollbar-thumb:hover {
+      background: #1A91DA;
     }
   </style>
 </head>
-<body> 
-  <h1>PII Analyzer</h1>  
-  <h3>Upload a file</h3>
-  <input type="file" id="file-input">
-  <button id="parse-button">Parse File</button>
+<body>
+  <h1>PII Analyzer</h1>
+  <h3>Upload a file to analyze</h3>
+  <input type="file" id="file-input" accept=".txt,.csv,.json">
+  <button id="parse-button">Analyze File</button>
   <div id="output"></div>
   <script type="module" src="popup.js"></script>
 </body>
