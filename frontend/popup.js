@@ -3,10 +3,10 @@ import * as pdfjsLib from './libs/pdf.mjs';
 
 function scanForPII2(text) {
     const patterns = {
-        email: /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g,
-        phone: /\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}/g,
-        ssn: /\b(?!XXX-XX-XXXX)(?!xxx-xx-xxxx)(?!xxx-xx-\d{4})(\d{3}-\d{2}-\d{4})\b/g,
-        tin: /\b(?!9XX-XX-XXXX)(?!9xx-xx-xxxx)(?!9xx-xx-\d{4} )(9\d{2}-\d{2}-\d{4})\b/g,
+        email: /\b[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}\b/g,
+        phone: /\b\d{10}\b|\(\d{3}\)\s?\d{3}[-.\s]?\d{4}\b/g,
+        ssn: /\b(?!XXX-XX-XXXX)(\d{3}-\d{2}-\d{4})\b/g,
+        tin: /\b(?!9XX-XX-XXXX)(9\d{2}-\d{2}-\d{4})\b/g,
         driverLicense: /\b[A-Z]{1,3}\d{6,8}\b/g,
         DoB: /\b(\d{4}[-/]\d{2}[-/]\d{2}|\d{2}[-/]\d{2}[-/]\d{4})\b/g
     };
