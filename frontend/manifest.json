@@ -1,6 +1,6 @@
 {
     "manifest_version": 3,
-    "name": "PII Extension",
+    "name": "Swiper-No-Swiping",
     "description": "An extension to parse files and extract PIIs",
     "version": "1.0",
     "action": {
